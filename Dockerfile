@@ -11,4 +11,4 @@ RUN sed -i 's/ROLLINGFILE/CONSOLE/' /etc/zookeeper/conf/environment
 ADD start.sh /usr/local/bin/
 RUN chmod 777 /usr/local/bin/start.sh
 
-CMD ["/usr/local/bin/start.sh"]
+ENTRYPOINT ["/usr/local/bin/start.sh"]
