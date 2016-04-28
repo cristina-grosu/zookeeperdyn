@@ -3,8 +3,7 @@ FROM ubuntu:trusty
 USER root
 
 RUN apt-get update && apt-get dist-upgrade -y
-RUN add-apt-repository ppa:openjdk-r/ppa
-RUN apt-get install -y zookeeper openjdk-8-jre tar wget 
+RUN apt-get install -y zookeeper tar wget 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN sed -i 's/ROLLINGFILE/CONSOLE/' /etc/zookeeper/conf/environment
