@@ -11,7 +11,7 @@ RUN sed -i 's/ROLLINGFILE/CONSOLE/' /etc/zookeeper/conf/environment
 ADD start.sh /opt
 RUN chmod 777 /opt/start.sh
 
-RUN wget https://www.apache.org/dyn/closer.cgi?path=/kafka/0.9.0.1/kafka_2.10-0.9.0.1.tgz
+RUN wget http://mirrors.hostingromania.ro/apache.org/kafka/0.9.0.1/kafka_2.10-0.9.0.1.tgz
 RUN tar xzvf kafka_2.10-0.9.0.1.tgz -C /opt
 
 ENV KAFKA_HOME /opt/kafka_2.10-0.9.0.1
