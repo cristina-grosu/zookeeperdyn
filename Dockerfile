@@ -20,4 +20,4 @@ RUN chmod 777 /opt/start-kafka.sh
 
 #RUN ./opt/start.sh
 
-ENTRYPOINT ["/opt/start.sh && /opt/start-kafka.sh"]
+ENTRYPOINT ["/opt/start.sh"]
