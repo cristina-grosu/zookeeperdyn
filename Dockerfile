@@ -18,6 +18,6 @@ ENV KAFKA_HOME /opt/kafka_2.10-0.9.0.1
 ADD start-kafka.sh /opt/start-kafka.sh
 RUN chmod 777 /opt/start-kafka.sh
 
-RUN bash /opt/start.sh
+RUN ./opt/start.sh
 
 ENTRYPOINT ["/opt/start-kafka.sh"]
