@@ -7,7 +7,7 @@ RUN apk add --no-cache wget tar
 RUN cd /opt && wget http://mirror.evowise.com/apache/zookeeper/zookeeper-3.5.2-alpha/zookeeper-3.5.2-alpha.tar.gz
 RUN tar xzvf /opt/zookeeper-3.5.2-alpha.tar.gz
 RUN rm -rf /opt/zookeeper-3.5.2-alpha.tar.gz
-RUN pwd
+RUN find / -name zookeeper*
 RUN cd /opt/zookeeper-3.5.2-alpha
 
 ENV ZK_HOME /opt/zookeeper-3.5.2-alpha/
