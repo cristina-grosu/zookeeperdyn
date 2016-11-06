@@ -16,6 +16,7 @@ RUN echo "standaloneEnabled=false" >> $ZK_HOME/conf/zoo.cfg
 RUN echo "dynamicConfigFile=/opt/zookeeper-3.5.2-alpha/conf/zoo.cfg.dynamic" >> $ZK_HOME/conf/zoo.cfg
 
 ADD zk-init.sh $ZK_HOME/bin/
+RUN chmod 777 /opt/zookeeper-3.5.2-alpha/bin/zk-init.sh
 
 EXPOSE 2181 2888 3888
-ENTRYPOINT ["$ZK_HOME/bin/zk-init.sh"]
+ENTRYPOINT ["/opt/zookeeper-3.5.2-alpha/bin/zk-init.sh"]
