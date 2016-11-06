@@ -23,7 +23,7 @@ while read line; do
 	index=$(echo $line | grep -oE "Address [0-9]*:" | grep -oE "[0-9]*")
         index=$(($index + 0))
 	
-	if [[ "$ip" == "$local_ip" ] && [$index -eq 0 ]]; then
+	if [ "$ip" == "$local_ip" ] && [$index -eq 0 ]; then
 		echo "server.$index=$local_ip:2888:3888;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
   		$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$index
   		ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground
