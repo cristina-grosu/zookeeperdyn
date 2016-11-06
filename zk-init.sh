@@ -5,12 +5,12 @@ ifconfig | grep -oE "\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?\.){3}(25[0-5]|2[0-4
 local_ip=$(head -n1 output) && \
 rm output
 
-if [ $ID -eq 1 ]; then
+#if [ $ID -eq 1 ]; then
 
-	echo "server.$ID=$local_ip:2888:3888;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
-  	$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$ID
-  	ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground
-else
+#	echo "server.$ID=$local_ip:2888:3888;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
+#  	$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$ID
+#  	ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground
+#else
 	nslookup $HOSTNAME >> zk.cluster
 
 	# Configure Zookeeper
@@ -22,7 +22,7 @@ else
 		no_instances=$(($(wc -l < zk.cluster) - 2))
 	done
 
-	touch hosts
+	
 	
 	while read line; do
 		ip=$(echo $line | grep -oE "\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b")
@@ -46,7 +46,7 @@ else
 			fi
 		fi
 	done < 'zk.cluster'
-fi
+#fi
 	
 
 
