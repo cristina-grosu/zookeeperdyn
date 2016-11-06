@@ -11,7 +11,7 @@ nslookup $HOSTNAME >> zk.cluster
 # Configure Zookeeper
 no_instances=$(($(wc -l < zk.cluster) - 2))
 
-while [ $no_instances -le $NO ] ; do#
+while [ $no_instances -le $NO ] ; do
 	rm -rf zk.cluster
 	nslookup $HOSTNAME
 	nslookup $HOSTNAME >> zk.cluster
