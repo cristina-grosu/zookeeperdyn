@@ -5,6 +5,7 @@ ifconfig | grep -oE "\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?\.){3}(25[0-5]|2[0-4
 local_ip=$(head -n1 output) && \
 rm output
 
+nslookup $HOSTNAME
 nslookup $HOSTNAME >> zk.cluster
 
 # Configure Zookeeper
@@ -12,6 +13,7 @@ no_instances=$(($(wc -l < zk.cluster) - 2))
 
 while [ $no_instances -le $NO ] ; do
 	rm -rf zk.cluster
+	nslookup $HOSTNAME
 	nslookup $HOSTNAME >> zk.cluster
 	no_instances=$(($(wc -l < zk.cluster) - 2))
 done
