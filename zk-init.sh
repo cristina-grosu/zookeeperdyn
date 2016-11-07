@@ -26,7 +26,7 @@ while read line; do
 done < 'zk.cluster'
 rm zk.cluster
 
-sort -n zk.cluster.tmp >> zk.cluster.tmp
+sort -n zk.cluster.tmp > zk.cluster.tmp
 
 index=0		
 while read line; do
