@@ -26,13 +26,12 @@ while read line; do
 done < 'zk.cluster'
 rm zk.cluster
 
-sort -n zk.cluster.tmp > zk.cluster.tmp
+sort -n zk.cluster.tmp > zk.cluster.tmp.sort
+mv zk.cluster.tmp.sort zk.cluster.tmp
 
 index=0		
 while read line; do
-	#ip=$(echo $line | grep -oE "\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b")
-	#index=$(echo $line | grep -oE "Address [0-9]*:" | grep -oE "[0-9]*")
-	if [ ! "$line" ]; then
+	if [ "$line" != "" ]; then
        		index=$(($index + 1))
 	
 		if [ $index -eq 1 ]; then 
@@ -56,3 +55,5 @@ while read line; do
 		fi
 	fi
 done < 'zk.cluster.tmp'
+
+rm zk.cluster.tmp
