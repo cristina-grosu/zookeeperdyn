@@ -43,6 +43,7 @@ while read line; do
   			ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground
 			echo "EU sunt Primul"
 		else
+			sleep 10
 			echo "Eu sunt $index"
 			
 			grep "$local_ip" $ZK_HOME/conf/zoo.cfg.dynamic > result
