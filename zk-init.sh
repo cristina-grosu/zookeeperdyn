@@ -41,13 +41,22 @@ while read line; do
 			echo "server.$index=$local_ip:2888:3888;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
   			$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$index
   			ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground
+			echo "EU sunt Primul"
 		else
+			echo "Eu sunt $index"
+			
 			grep "$local_ip" $ZK_HOME/conf/zoo.cfg.dynamic > result
 			if [ "$result" != "$local_ip" ]; then
 			if [ "$line" == "$local_ip" ] && [ $index -ne 1 ]; then
 				echo "`bin/zkCli.sh -server $ZK:2181 get /zookeeper/config|grep ^server`" >> $ZK_HOME/conf/zoo.cfg.dynamic
   				echo "server.$index=$local_ip:2888:3888:observer;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
     				cp $ZK_HOME/conf/zoo.cfg.dynamic $ZK_HOME/conf/zoo.cfg.dynamic.org
+				echo "Eu sunt $index"
+				echo "zoo.cfg"
+				cat  $ZK_HOME/conf/zoo.cfg
+				echo "zoo.cfg.dynamic"
+				$ZK_HOME/conf/zoo.cfg.dynamic
+				echo "ZK is $ZK and I am $line" 
   				$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$index
   				ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start
   				$ZK_HOME/bin/zkCli.sh -server $ZK:2181 reconfig -add "server.$index=$local_ip:2888:3888:participant;2181"
