@@ -31,6 +31,7 @@ mv zk.cluster.tmp.sort zk.cluster.tmp
 
 touch $ZK_HOME/conf/zoo.cfg.dynamic
 index=0		
+chmod -R 777 $ZK_HOME
 
 while read line; do
 	if [ "$line" != "" ]; then
