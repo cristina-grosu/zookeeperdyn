@@ -52,7 +52,7 @@ while read line; do
 			grep "$local_ip" $ZK_HOME/conf/zoo.cfg.dynamic > result
 			if [ "$result" != "$local_ip" ]; then
 			if [ "$line" == "$local_ip" ] && [ $index -ne 1 ]; then
-				echo "`bin/zkCli.sh -server $ZK:2181 get /zookeeper/zoo.cfg|grep ^server`" >> $ZK_HOME/conf/zoo.cfg.dynamic
+				echo "`$ZK_HOME/bin/zkCli.sh -server $ZK:2181 get /zookeeper/config |grep ^server`" >> $ZK_HOME/conf/zoo.cfg.dynamic
   				echo "server.$index=$local_ip:2888:3888:observer;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
     				cp $ZK_HOME/conf/zoo.cfg.dynamic $ZK_HOME/conf/zoo.cfg.dynamic.org
 				echo "Eu sunt $index"
