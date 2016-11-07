@@ -29,7 +29,9 @@ rm zk.cluster
 sort -n zk.cluster.tmp > zk.cluster.tmp.sort
 mv zk.cluster.tmp.sort zk.cluster.tmp
 
+touch $ZK_HOME/conf/zoo.cfg.dynamic
 index=0		
+
 while read line; do
 	if [ "$line" != "" ]; then
        		index=$(($index + 1))
