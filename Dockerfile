@@ -9,7 +9,7 @@ RUN cd /opt && tar xzvf /opt/zookeeper-3.5.2-alpha.tar.gz
 RUN rm -rf /opt/zookeeper-3.5.2-alpha.tar.gz
 RUN cd /opt/zookeeper-3.5.2-alpha
 
-ENV ZK_HOME /opt/zookeeper-3.5.2-alpha/
+ENV ZK_HOME /opt/zookeeper-3.5.2-alpha
 
 RUN cp $ZK_HOME/conf/zoo_sample.cfg $ZK_HOME/conf/zoo.cfg
 RUN echo "standaloneEnabled=false" >> $ZK_HOME/conf/zoo.cfg
