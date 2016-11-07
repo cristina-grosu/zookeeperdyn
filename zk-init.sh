@@ -39,7 +39,7 @@ chmod -R 777 $ZK_HOME
 # Run each Zookeeper node as standalone Zookeeper
 echo "server.$myindex=$local_ip:2888:3888;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
 $ZK_HOME/bin/zkServer-initialize.sh --force --myid=$myindex
-ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground
+ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start &
 
 # Check the configuration of the rest of the servers
 while read line; do
