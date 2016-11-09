@@ -55,7 +55,6 @@ fi
 # Check the configuration of the rest of the servers
 while read line; do
 	# If this is not my ip
-	sleep 5
 	if [ "$line" != "$local_ip" ] && [ "$line" != "" ]; then
 		# Retrieve the information of the ZK cluster represented by the current server and check if the local_ip is already configured
 		echo "`$ZK_HOME/bin/zkCli.sh -server $line:2181 get /zookeeper/config | grep ^server`" >> cluster.config
@@ -85,7 +84,7 @@ while read line; do
   			ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start
   			$ZK_HOME/bin/zkCli.sh -server $line:2181 reconfig -add "server.$myindex=$local_ip:2888:3888:participant;2181"
   			$ZK_HOME/bin/zkServer.sh stop
-  			ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground
+  			ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start
 		fi
 		rm result
 	fi 
