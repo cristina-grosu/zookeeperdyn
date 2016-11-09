@@ -71,7 +71,7 @@ while read line; do
 			echo "Zookeeper is stopped"
 			echo "`$ZK_HOME/bin/zkCli.sh -server $line:2181 get /zookeeper/config |grep ^server`" >> $ZK_HOME/conf/zoo.cfg.dynamic
 			echo "I am getting the configuration of another server"
-			echo "server.$myindex=$local_ip:2888:3888:observer;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
+			#echo "server.$myindex=$local_ip:2888:3888:observer;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
     			cp $ZK_HOME/conf/zoo.cfg.dynamic $ZK_HOME/conf/zoo.cfg.dynamic.org
 			echo "Eu sunt $myindex"
 			echo "The updated dynamic configuration of the zoo.cfg.dynamic file is the next one"
