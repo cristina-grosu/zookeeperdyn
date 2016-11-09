@@ -91,4 +91,7 @@ while read line; do
 	fi 
 done < 'zk.cluster.tmp'
 
+$ZK_HOME/bin/zkServer.sh stop
+ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground
+
 rm zk.cluster.tmp
