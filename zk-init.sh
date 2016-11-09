@@ -48,7 +48,7 @@ else
 	$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$myindex
 	echo "I am starting zookeeper"
 	ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start &
-	echo "It was started"
+	echo "It was started in non standalone"
 fi
 # Check the configuration of the rest of the servers
 while read line; do
