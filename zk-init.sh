@@ -64,13 +64,13 @@ while read line; do
 		
 		# If the local_ip is not present in the configuration
 		if [ "$result" != "$local_ip" ]; then
-			$ZK_HOME/bin/zkServer.sh stop
+			#$ZK_HOME/bin/zkServer.sh stop
 			echo "`$ZK_HOME/bin/zkCli.sh -server $line:2181 get /zookeeper/config |grep ^server`" >> $ZK_HOME/conf/zoo.cfg.dynamic
   			echo "server.$myindex=$local_ip:2888:3888:observer;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
     			cp $ZK_HOME/conf/zoo.cfg.dynamic $ZK_HOME/conf/zoo.cfg.dynamic.org
 			echo "Eu sunt $myindex"
 			echo "zoo.cfg.dynamic"
-			$ZK_HOME/conf/zoo.cfg.dynamic
+			cat $ZK_HOME/conf/zoo.cfg.dynamic
 			echo "ZK is $line and I am $local_ip" 
   			$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$myindex
   			ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start
