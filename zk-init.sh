@@ -76,6 +76,8 @@ while read line; do
 			echo "Eu sunt $myindex"
 			echo "The updated dynamic configuration of the zoo.cfg.dynamic file is the next one"
 			cat $ZK_HOME/conf/zoo.cfg.dynamic
+			$ZK_HOME/bin/zkServer.sh stop
+			echo "Zookeeper is stopped"
 			echo "ZK is $line and I am $local_ip"
 			echo "the current server is reinitialized"
   			$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$myindex
