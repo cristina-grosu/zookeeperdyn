@@ -37,27 +37,28 @@ touch $ZK_HOME/conf/zoo.cfg.dynamic
 chmod -R 777 $ZK_HOME
 
 # Run each Zookeeper node as standalone Zookeeper
-#if [ $NO == 1 ]; then
+if [ $NO == 1 ]; then
 	echo "server.$myindex=$local_ip:2888:3888;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
 	$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$myindex
 	echo "I am starting zookeeper"
 	ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground
 	echo "It was started"
-#else
-#	echo "server.$myindex=$local_ip:2888:3888;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic#
-#	$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$myindex
-#	echo "I am starting zookeeper"
-#	ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start &
-#	echo "It was started in non standalone"
-#fi
+else
+	echo "server.$myindex=$local_ip:2888:3888;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
+	$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$myindex
+	echo "I am starting zookeeper"
+	ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start &
+	echo "It was started in non standalone"
+fi
 # Check the configuration of the rest of the servers
 while read line; do
 	# If this is not my ip
+	sleep 5
 	if [ "$line" != "$local_ip" ] && [ "$line" != "" ]; then
 		# Retrieve the information of the ZK cluster represented by the current server and check if the local_ip is already configured
 		echo "`$ZK_HOME/bin/zkCli.sh -server $line:2181 get /zookeeper/config |grep ^server`" >> cluster.config
 		echo "my index is $myindex and the configuration of $line is "
-		cluster.config
+		cat cluster.config
 		grep "$local_ip" cluster.config > result
 		#rm cluster.config
 		
