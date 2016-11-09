@@ -37,19 +37,19 @@ touch $ZK_HOME/conf/zoo.cfg.dynamic
 chmod -R 777 $ZK_HOME
 
 # Run each Zookeeper node as standalone Zookeeper
-if [ $NO == 1 ]; then
+#if [ $NO == 1 ]; then
 	echo "server.$myindex=$local_ip:2888:3888;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
 	$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$myindex
 	echo "I am starting zookeeper"
 	ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground
 	echo "It was started"
-else
-	echo "server.$myindex=$local_ip:2888:3888;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
-	$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$myindex
-	echo "I am starting zookeeper"
-	ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start &
-	echo "It was started in non standalone"
-fi
+#else
+#	echo "server.$myindex=$local_ip:2888:3888;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic#
+#	$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$myindex
+#	echo "I am starting zookeeper"
+#	ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start &
+#	echo "It was started in non standalone"
+#fi
 # Check the configuration of the rest of the servers
 while read line; do
 	# If this is not my ip
