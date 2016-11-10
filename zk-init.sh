@@ -44,7 +44,7 @@ if [ $NO == 1 ]; then
 	ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground
 	echo "It was started"
 else
-	echo "server.$myindex=$local_ip:2888:3888;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
+	#echo "server.$myindex=$local_ip:2888:3888;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
 	
 	$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$myindex
 	echo "I am starting zookeeper"
