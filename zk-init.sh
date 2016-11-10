@@ -48,13 +48,12 @@ else
 	
 	$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$myindex
 	echo "I am starting zookeeper"
-	ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start 
+	ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground
 	echo "It was started in non standalone"
 	jps
 fi
 # Check the configuration of the rest of the servers
 while read line; do
-	# If this is not my ip
 	if [ "$line" != "$local_ip" ] && [ "$line" != "" ]; then
 		# Retrieve the information of the ZK cluster represented by the current server and check if the local_ip is already configured
 		echo "`$ZK_HOME/bin/zkCli.sh -server $local_ip:2181 sync /zookeeper`" >> sync.config
