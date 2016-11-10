@@ -43,21 +43,21 @@ if [ $NO == 1 ]; then
 	echo "I am starting zookeeper"
 	ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground
 	echo "It was started"
-else
-	echo "server.$myindex=$local_ip:2888:3888;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
-	$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$myindex
-	echo "I am starting zookeeper"
-	ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground
-	echo "It was started in non standalone"
-	jps
+#else#
+#	echo "server.$myindex=$local_ip:2888:3888;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
+#	$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$myindex
+#	echo "I am starting zookeeper"
+#	ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground
+#	echo "It was started in non standalone"
+#	jps
 fi
 # Check the configuration of the rest of the servers
 while read line; do
 	if [ "$line" != "$local_ip" ] && [ "$line" != "" ]; then
 		# Retrieve the information of the ZK cluster represented by the current server and check if the local_ip is already configured
-		echo "`$ZK_HOME/bin/zkCli.sh -server $local_ip:2181 sync /zookeeper`" >> sync.config
-		cat sync.config
-		echo "`$ZK_HOME/bin/zkCli.sh -server $local_ip:2181 config /zookeeper | grep ^server`" >> cluster.config
+		#echo "`$ZK_HOME/bin/zkCli.sh -server $line:2181 sync /zookeeper`" >> sync.config
+		#cat sync.config
+		echo "`$ZK_HOME/bin/zkCli.sh -server $line:2181 config /zookeeper | grep ^server`" >> cluster.config
 		echo "my index is $myindex and the configuration of $line is "
 		cat cluster.config
 		grep "$line" cluster.config > result
@@ -69,30 +69,30 @@ while read line; do
 			#$ZK_HOME/bin/zkServer.sh stop
 			#echo "Zookeeper is stopped"
 			#echo "`$ZK_HOME/bin/zkCli.sh -server $line:2181 get /zookeeper/config |grep ^server`" >> $ZK_HOME/conf/zoo.cfg.dynamic
-			echo "`$ZK_HOME/bin/zkCli.sh -server $local_ip:2181 config /zookeeper |grep ^server`" >> cluster.dynamic
-			echo "The result of the configuration step for server $local_ip is"
+			echo "`$ZK_HOME/bin/zkCli.sh -server $line:2181 config /zookeeper |grep ^server`" >> cluster.dynamic
+			echo "The result of the configuration step for server $line is"
 			cat cluster.dynamic
 			#echo "I am getting the configuration of another server"
-			#echo "server.$myindex=$local_ip:2888:3888:observer;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
-    			#cp $ZK_HOME/conf/zoo.cfg.dynamic $ZK_HOME/conf/zoo.cfg.dynamic.org
+			echo "server.$myindex=$local_ip:2888:3888:observer;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
+    			cp $ZK_HOME/conf/zoo.cfg.dynamic $ZK_HOME/conf/zoo.cfg.dynamic.org
 			echo "Eu sunt $myindex"
 			#echo "The updated dynamic configuration of the zoo.cfg.dynamic file is the next one"
 			#cat $ZK_HOME/conf/zoo.cfg.dynamic
 			#$ZK_HOME/bin/zkServer.sh stop
 			#echo "Zookeeper is stopped"
-			echo "ZK is $local_ip and I am analyzing $line"
+			echo "ZK is $line and I am analyzing $local_ip"
 			echo "the current server is reinitialized"
   			$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$myindex
 			#echo "the current server is started"
-  			#ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start
+  			ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start
 			index=$(echo $line | sed -e 's/\.//g')
-  			$ZK_HOME/bin/zkCli.sh -server $local_ip:2181 reconfig -add "server.$index=$line:2888:3888:participant;2181"
+  			$ZK_HOME/bin/zkCli.sh -server $line:2181 reconfig -add "server.$myindex=$local_ip:2888:3888:participant;2181"
 			echo "I added the line in the ZK cluster"
-			echo "`$ZK_HOME/bin/zkCli.sh -server $local_ip:2181 config /zookeeper |grep ^server`" >> cluster.dynamic
+			echo "`$ZK_HOME/bin/zkCli.sh -server $line:2181 config /zookeeper |grep ^server`" >> cluster.dynamic
 			echo "The newly configured server configuration is"
 			cat cluster.dynamic
-  			#$ZK_HOME/bin/zkServer.sh stop
-  			#ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start
+  			$ZK_HOME/bin/zkServer.sh stop
+  			ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground
 		fi
 		rm result
 	fi 
