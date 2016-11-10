@@ -43,13 +43,13 @@ if [ $NO == 1 ]; then
 	echo "I am starting zookeeper"
 	ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground
 	echo "It was started"
-#else#
-#	echo "server.$myindex=$local_ip:2888:3888;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
-#	$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$myindex
-#	echo "I am starting zookeeper"
-#	ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground
-#	echo "It was started in non standalone"
-#	jps
+else
+	echo "====== STEP 0 ========"
+	echo "Starting Zooky as standalone server"
+	echo "server.$myindex=$local_ip:2888:3888;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
+	$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$myindex
+	echo "I am starting zookeeper"
+	ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground
 fi
 # Check the configuration of the rest of the servers
 while read line; do
