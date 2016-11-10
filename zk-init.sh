@@ -68,7 +68,7 @@ while read line; do
 		if [ "$result" != "$local_ip" ]; then
 			#$ZK_HOME/bin/zkServer.sh stop
 			#echo "Zookeeper is stopped"
-			#echo "`$ZK_HOME/bin/zkCli.sh -server $line:2181 get /zookeeper/config |grep ^server`" >> $ZK_HOME/conf/zoo.cfg.dynamic
+			echo "`$ZK_HOME/bin/zkCli.sh -server $line:2181 get /zookeeper/config | grep ^server`" >> $ZK_HOME/conf/zoo.cfg.dynamic
 			echo "`$ZK_HOME/bin/zkCli.sh -server $line:2181 config /zookeeper |grep ^server`" >> cluster.dynamic
 			echo "The result of the configuration step for server $line is"
 			cat cluster.dynamic
