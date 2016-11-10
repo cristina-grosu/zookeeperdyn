@@ -75,8 +75,8 @@ while read line; do
     			cp $ZK_HOME/conf/zoo.cfg.dynamic $ZK_HOME/conf/zoo.cfg.dynamic.org
 			echo "Eu sunt $myindex"
 			cat $ZK_HOME/conf/zoo.cfg.dynamic
-			#$ZK_HOME/bin/zkServer.sh stop
-			#echo "Zookeeper is stopped"
+			$ZK_HOME/bin/zkServer.sh stop
+			echo "Zookeeper is stopped"
 			
 			echo "====== STEP 3 ========="
 			echo "Reconfigure server $myindex"
