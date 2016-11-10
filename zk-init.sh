@@ -72,22 +72,27 @@ while read line; do
 			#echo "Zookeeper is stopped"
 			#echo "`$ZK_HOME/bin/zkCli.sh -server $line:2181 get /zookeeper/config |grep ^server`" >> $ZK_HOME/conf/zoo.cfg.dynamic
 			echo "`$ZK_HOME/bin/zkCli.sh -server $local_ip:2181 config /zookeeper |grep ^server`" >> cluster.dynamic
+			echo "The result of the configuration step for server $local_ip is"
 			cat cluster.dynamic
-			echo "I am getting the configuration of another server"
+			#echo "I am getting the configuration of another server"
 			#echo "server.$myindex=$local_ip:2888:3888:observer;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
     			#cp $ZK_HOME/conf/zoo.cfg.dynamic $ZK_HOME/conf/zoo.cfg.dynamic.org
 			echo "Eu sunt $myindex"
-			echo "The updated dynamic configuration of the zoo.cfg.dynamic file is the next one"
+			#echo "The updated dynamic configuration of the zoo.cfg.dynamic file is the next one"
 			#cat $ZK_HOME/conf/zoo.cfg.dynamic
 			#$ZK_HOME/bin/zkServer.sh stop
 			#echo "Zookeeper is stopped"
-			echo "ZK is $line and I am $local_ip"
+			echo "ZK is $local_ip and I am analyzing $line"
 			echo "the current server is reinitialized"
   			$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$myindex
-			echo "the current server is started"
+			#echo "the current server is started"
   			#ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start
 			index=$(echo $line | sed -e 's/\.//g')
   			$ZK_HOME/bin/zkCli.sh -server $local_ip:2181 reconfig -add "server.$index=$line:2888:3888:participant;2181"
+			echo "I added the line in the ZK cluster"
+			echo "`$ZK_HOME/bin/zkCli.sh -server $local_ip:2181 config /zookeeper |grep ^server`" >> cluster.dynamic
+			echo "The newly configured server configuration is"
+			cat cluster.dynamic
   			#$ZK_HOME/bin/zkServer.sh stop
   			#ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start
 		fi
