@@ -28,10 +28,10 @@ while read line; do
 	ip=$(echo $line | grep -oE "\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b")
 	echo "$ip" >> zk.cluster.tmp
 done < 'zk.cluster'
-rm zk.cluster
+#rm zk.cluster
 
-sort -n zk.cluster.tmp > zk.cluster.tmp.sort
-mv zk.cluster.tmp.sort zk.cluster.tmp
+#sort -n zk.cluster.tmp > zk.cluster.tmp.sort
+#mv zk.cluster.tmp.sort zk.cluster.tmp
 
 touch $ZK_HOME/conf/zoo.cfg.dynamic		
 chmod -R 777 $ZK_HOME
@@ -43,24 +43,28 @@ if [ $NO == 1 ]; then
 	echo "I am starting zookeeper"
 	ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground
 	echo "It was started"
-else
-	echo "====== STEP 0 ========"
-	echo "Starting Zooky as standalone server"
-	echo "server.$myindex=$local_ip:2888:3888;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
-	$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$myindex
-	echo "I am starting zookeeper"
-	ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start
-	jps
+#else
+#	echo "====== STEP 0 ========"
+#	echo "Starting Zooky as standalone server"
+#	echo "server.$myindex=$local_ip:2888:3888;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
+#	$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$myindex
+#	echo "I am starting zookeeper"
+#	ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start
+#	jps
 fi
 # Check the configuration of the rest of the servers
 while read line; do
+	if [ "$line" == "$local_ip" ]; then 
+		echo "====== STEP 0 ========"
+		echo "Starting Zooky as standalone server"
+		echo "server.$myindex=$local_ip:2888:3888;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
+		$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$myindex
+		echo "I am starting zookeeper"
+		ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start
+		jps
+	fi	
 	if [ "$line" != "$local_ip" ] && [ "$line" != "" ]; then
 		echo "`$ZK_HOME/bin/zkCli.sh -server $line:2181 config /zookeeper | grep ^server`" >> cluster.config
-		lines=$((wc -l < cluster.config))
-		while [ $lines == 0 ]; do
-			echo "`$ZK_HOME/bin/zkCli.sh -server $line:2181 config /zookeeper | grep ^server`" > cluster.config
-			lines=$((wc -l < cluster.config))
-		done
 		echo "my index is $myindex and the configuration of $line is "
 		cat cluster.config
 		grep "$line" cluster.config > result
@@ -107,8 +111,8 @@ while read line; do
 		fi
 		rm result
 	fi 
-done < 'zk.cluster.tmp'
-
+#done < 'zk.cluster.tmp'
+done < 'zk.cluster'
 #$ZK_HOME/bin/zkServer.sh stop
 #ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground
 
