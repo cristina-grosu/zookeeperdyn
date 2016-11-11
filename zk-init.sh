@@ -110,13 +110,13 @@ while read line; do
 			
 			echo "======= STEP 7 ========"
 			echo "Starting Zooky"
-  			ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground
+  			ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start
 		fi
 		rm result
 	fi 
 #done < 'zk.cluster.tmp'
 done < 'zk.cluster.tmp'
-#$ZK_HOME/bin/zkServer.sh stop
-#ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground
+$ZK_HOME/bin/zkServer.sh stop
+ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground
 
 rm zk.cluster.tmp
