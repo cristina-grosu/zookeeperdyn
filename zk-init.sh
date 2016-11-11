@@ -50,11 +50,11 @@ else
 	$ZK_HOME/bin/zkServer-initialize.sh --force --myid=$myindex
 	echo "I am starting zookeeper"
 	nohup ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start-foreground &
+	jps
 fi
 # Check the configuration of the rest of the servers
 while read line; do
 	if [ "$line" != "$local_ip" ] && [ "$line" != "" ]; then
-		sleep 5
 		echo "`$ZK_HOME/bin/zkCli.sh -server $line:2181 config /zookeeper | grep ^server`" >> cluster.config
 		echo "my index is $myindex and the configuration of $line is "
 		cat cluster.config
