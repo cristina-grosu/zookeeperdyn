@@ -82,13 +82,15 @@ while read line; do
 			echo "Adding current server in the current zookeeper dynamic configuration"
 			#newindex=$(echo $line | sed -e 's/\.//g')
 			#echo "server.$newindex=$line:2888:3888;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
-			echo "server.$myindex=$local_ip:2888:3888:observer;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
+			grep "$local_ip" $ZK_HOME/conf/zoo.cfg.dynamic > result
+			if [ "$result" != "$local_ip" ]; then
+				echo "server.$myindex=$local_ip:2888:3888:observer;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
     			
-			cp $ZK_HOME/conf/zoo.cfg.dynamic $ZK_HOME/conf/zoo.cfg.dynamic.org
-			echo "Eu sunt $myindex"
-			cat $ZK_HOME/conf/zoo.cfg.dynamic
-			$ZK_HOME/bin/zkServer.sh stop
-			echo "Zookeeper is stopped"
+				cp $ZK_HOME/conf/zoo.cfg.dynamic $ZK_HOME/conf/zoo.cfg.dynamic.org
+				echo "Eu sunt $myindex"
+				cat $ZK_HOME/conf/zoo.cfg.dynamic
+				$ZK_HOME/bin/zkServer.sh stop
+				echo "Zookeeper is stopped"
 			
 			echo "====== STEP 3 ========="
 			echo "Reconfigure server $myindex"
@@ -111,6 +113,7 @@ while read line; do
 			echo "======= STEP 7 ========"
 			echo "Starting Zooky"
   			ZOO_LOG_DIR=/var/log ZOO_LOG4J_PROP='INFO,CONSOLE,ROLLINGFILE' $ZK_HOME/bin/zkServer.sh start
+			fi
 		fi
 		rm result
 	fi 
