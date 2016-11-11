@@ -56,6 +56,11 @@ fi
 while read line; do
 	if [ "$line" != "$local_ip" ] && [ "$line" != "" ]; then
 		echo "`$ZK_HOME/bin/zkCli.sh -server $line:2181 config /zookeeper | grep ^server`" >> cluster.config
+		lines=$((wc -l < cluster.config))
+		while [ $lines == 0 ]; do
+			echo "`$ZK_HOME/bin/zkCli.sh -server $line:2181 config /zookeeper | grep ^server`" > cluster.config
+			lines=$((wc -l < cluster.config))
+		done
 		echo "my index is $myindex and the configuration of $line is "
 		cat cluster.config
 		grep "$line" cluster.config > result
