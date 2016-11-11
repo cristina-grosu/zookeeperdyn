@@ -71,7 +71,8 @@ while read line; do
 		echo "the result of the comparison is $result"
 		
 		# If the local_ip is not present in the configuration
-		if [ "$result" != "$local_ip" ]; then
+		#if [ "$result" != "$local_ip" ]; then
+		if [ "$result" != "" ]; then
 			echo "`$ZK_HOME/bin/zkCli.sh -server $line:2181 get /zookeeper/config | grep ^server`" >> $ZK_HOME/conf/zoo.cfg.dynamic
 			
 			echo "=======STEP 1 =========="
