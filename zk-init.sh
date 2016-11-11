@@ -80,8 +80,8 @@ while read line; do
 			
 			echo "======= STEP 2 ========"
 			echo "Adding current server in the current zookeeper dynamic configuration"
-			newindex=$(echo $line | sed -e 's/\.//g')
-			echo "server.$newindex=$line:2888:3888;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
+			#newindex=$(echo $line | sed -e 's/\.//g')
+			#echo "server.$newindex=$line:2888:3888;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
 			echo "server.$myindex=$local_ip:2888:3888:observer;2181" >> $ZK_HOME/conf/zoo.cfg.dynamic
     			
 			cp $ZK_HOME/conf/zoo.cfg.dynamic $ZK_HOME/conf/zoo.cfg.dynamic.org
